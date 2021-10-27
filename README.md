@@ -1,6 +1,6 @@
 # Project's Name: onboard back
 
-## Project's Description: daniel surfando no back xD
+## Project's Description: treinamento para o back-end
 
 ## Environment and tools
 
