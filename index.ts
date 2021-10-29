@@ -10,7 +10,6 @@ const typeDefs = gql`
     ptBr: String
     en: String
   }
-
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each.
   type Query {
@@ -29,9 +28,8 @@ const hello = {
 const resolvers = {
   Query: {
     hello: () => hello,
-  },
-};
-
+  }
+}
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({ typeDefs, resolvers });
