@@ -42,8 +42,7 @@ const resolvers = {
     hello: () => hello,
   },
   Mutation: {
-    createUser(parents, args) {
-      console.log(args);
+    createUser(parent, args) {
       const data = {
         id: 1,
         name: args.data.name,
