@@ -1,7 +1,7 @@
 const { ApolloServer, gql } = require('apollo-server');
 
 import 'reflect-metadata';
-import { createConnection } from 'typeorm';
+import { createConnection, getRepository } from 'typeorm';
 import { User } from './entity/User';
 
 // A schema is a collection of type definitions (hence "typeDefs")
@@ -46,7 +46,18 @@ const resolvers = {
     hello: () => hello,
   },
   Mutation: {
-    async createUser(parent, args) {
+    async createUser(_parent: any, args: { data: { name: string; email: string; password: string } }) {
+      if (!args.data.name || !args.data.email || !args.data.password) {
+        throw new Error('name, email and password are required');
+      }
+      const { name, email, password } = args.data;
+      if (!/^((?=\S*?[a-z,A-Z])(?=\S*?[0-9]).{6,})\S/.test(password)) {
+        throw new Error('wrong password format');
+      }
+      if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email)) {
+        throw new Error('wrong email format');
+      }
+
       const data = await createConnection({
         type: 'postgres',
         host: 'localhost',
@@ -58,11 +69,18 @@ const resolvers = {
         synchronize: true,
         logging: false,
       })
-        .then((connection) => {
+        .then(async (connection) => {
+          const userRepository = getRepository(User);
+          const emailAlreadyExists = await userRepository.findOne({ email });
+          if (emailAlreadyExists) {
+            connection.close();
+            return new Error('email already exists');
+          }
+
           const user = new User();
-          user.name = args.data.name;
-          user.email = args.data.email;
-          user.password = args.data.email;
+          user.name = name;
+          user.email = email;
+          user.password = password;
           return connection.manager.save(user).then((user) => {
             connection.close();
             return { name: user.name, id: user.id, email: user.email };
