@@ -26,7 +26,7 @@
    },
    "scripts": {
       "start": "tsc & node build/index.js",
-      "start-postgres": "ts-node src/index.ts",
+      "start-postgres": "tsc & node build/src/index.js",
       "test": "echo \"Error: no test specified\" && exit 1"
    },
    "repository": {
