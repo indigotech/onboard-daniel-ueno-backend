@@ -3,6 +3,7 @@ const { ApolloServer, gql } = require('apollo-server');
 import 'reflect-metadata';
 import { createConnection, getRepository } from 'typeorm';
 import { User } from './entity/User';
+import { HashManager } from './services/hasmanager';
 
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -52,6 +53,7 @@ const resolvers = {
       if (!/^((?=\S*?[a-z,A-Z])(?=\S*?[0-9]).{6,})\S/.test(password)) {
         throw new Error('wrong password format');
       }
+
       if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email)) {
         throw new Error('wrong email format');
       }
@@ -62,10 +64,13 @@ const resolvers = {
         return new Error('email already exists');
       }
 
+      const hashManager = new HashManager();
+      const hashPassword = await hashManager.hash(password);
+
       const user = new User();
       user.name = name;
       user.email = email;
-      user.password = password;
+      user.password = hashPassword;
       return userRepository.save(user);
     },
   },
