@@ -11,11 +11,11 @@ const typeDefs = gql`
     en: String
   }
   input UserInput {
-    name: String
-    email: String
-    password: String
+    name: String!
+    email: String!
+    password: String!
   }
-  type UserOutput {
+  type User {
     id: ID
     name: String
     email: String
@@ -26,7 +26,7 @@ const typeDefs = gql`
     hello: Hello
   }
   type Mutation {
-    createUser(data: UserInput!): UserOutput
+    createUser(data: UserInput!): User
   }
 `;
 
