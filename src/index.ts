@@ -41,6 +41,7 @@ const hello = {
 };
 // Resolvers define the technique for fetching the types defined in the
 // schema.
+
 const resolvers = {
   Query: {
     hello: () => hello,
@@ -58,44 +59,28 @@ const resolvers = {
         throw new Error('wrong email format');
       }
 
-      const data = await createConnection({
-        type: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        username: 'testando123',
-        password: 'senha123',
-        database: 'database123',
-        entities: [User],
-        synchronize: true,
-        logging: false,
-      })
-        .then(async (connection) => {
-          const userRepository = getRepository(User);
-          const emailAlreadyExists = await userRepository.findOne({ email });
-          if (emailAlreadyExists) {
-            connection.close();
-            return new Error('email already exists');
-          }
+      const userRepository = getRepository(User);
+      const emailAlreadyExists = await userRepository.findOne({ email });
+      if (emailAlreadyExists) {
+        return new Error('email already exists');
+      }
 
-          const user = new User();
-          user.name = name;
-          user.email = email;
-          user.password = password;
-          return connection.manager.save(user).then((user) => {
-            connection.close();
-            return { name: user.name, id: user.id, email: user.email };
-          });
-        })
-        .catch((error) => console.log(error));
-      return data;
+      const user = new User();
+      user.name = name;
+      user.email = email;
+      user.password = password;
+      return userRepository.save(user);
     },
   },
 };
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({ typeDefs, resolvers });
-
+const connection = async () => {
+  return createConnection();
+};
 // The `listen` method launches a web server.
 server.listen().then(({ url }: any) => {
+  connection();
   console.log(`🚀  Server ready at ${url}`);
 });
