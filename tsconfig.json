@@ -10,6 +10,13 @@
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "sourceMap": true
+      "sourceMap": true,
+
+},
+      "include": [
+         "index.ts",
+         ".eslintrc.js",
+         "server.js",
+         "src/index.ts"
+      ],
    }
-}

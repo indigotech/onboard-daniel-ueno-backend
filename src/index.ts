@@ -12,13 +12,4 @@ createConnection({
   entities: [User],
   synchronize: true,
   logging: false,
-})
-  .then(async (connection) => {
-    const user = new User();
-    user.firstName = 'Daniel';
-    user.lastName = 'Ueno';
-    user.age = 32;
-    console.log(`testando aqui, usuario: ${user.firstName} ${user.lastName}, ${user.age} anos`);
-    return connection.manager.save(user).then((user) => console.log(`uhul!, id: ${user.id}`));
-  })
-  .catch((error) => console.log(error));
+});
