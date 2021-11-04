@@ -15,9 +15,9 @@ const typeDefs = gql`
     en: String
   }
   input UserInput {
-    name: String
-    email: String
-    password: String
+    name: String!
+    email: String!
+    password: String!
   }
   type User {
     id: ID
@@ -48,9 +48,6 @@ const resolvers = {
   },
   Mutation: {
     async createUser(_parent: any, args: { data: { name: string; email: string; password: string } }) {
-      if (!args.data.name || !args.data.email || !args.data.password) {
-        throw new Error('name, email and password are required');
-      }
       const { name, email, password } = args.data;
       if (!/^((?=\S*?[a-z,A-Z])(?=\S*?[0-9]).{6,})\S/.test(password)) {
         throw new Error('wrong password format');
