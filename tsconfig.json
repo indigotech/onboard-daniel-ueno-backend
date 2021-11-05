@@ -16,6 +16,6 @@
       "include": [
          ".eslintrc.js",
          "server.js",
-         "src/index.ts"
+         "src/**/*"
       ],
    }
