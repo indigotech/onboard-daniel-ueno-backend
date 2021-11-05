@@ -31,13 +31,40 @@ export const resolvers = {
       }
 
       const hashManager = new HashManager();
-      const hashPassword = await hashManager.hash(password);
+      const hashedPassword = await hashManager.hash(password);
 
       const user = new User();
       user.name = name;
       user.email = email;
-      user.password = hashPassword;
+      user.password = hashedPassword;
       return userRepository.save(user);
+    },
+
+    async login(_parent: any, args: { data: { email: string; password: string } }) {
+      const { email, password } = args.data;
+      if (!validator.password(password)) {
+        throw new CustomError('wrong password format', 400);
+      }
+
+      if (!validator.email(email)) {
+        throw new CustomError('wrong email format', 400);
+      }
+
+      const userRepository = getRepository(User);
+      const databaseUser = await userRepository.findOne({ email });
+      if (!databaseUser) {
+        return new CustomError('e-mail or password not correct', 401);
+      }
+      const hashManager = new HashManager();
+      const correctPassword = await hashManager.compare(password, databaseUser.password);
+      if (!correctPassword) {
+        return new CustomError('e-mail or password not correct', 401);
+      }
+      const response = {
+        login: { user: { id: databaseUser.id, name: databaseUser.name, email: databaseUser.email }, token: 'umtoken' },
+      };
+      console.log(response);
+      return response;
     },
   },
 };
