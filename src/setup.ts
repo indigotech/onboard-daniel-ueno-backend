@@ -7,7 +7,6 @@ import { User } from './entity/User';
 
 const isTest: boolean = process.env.TEST === 'true';
 dotenv.config({ path: process.cwd() + (isTest ? '/test.env' : '/.env') });
-console.log(isTest);
 
 const server = async () => {
   const server = new ApolloServer({ typeDefs, resolvers });
