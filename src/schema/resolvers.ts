@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { User } from '../entity/User';
 import { HashManager, validator } from '../services';
+import { CustomError } from '../model/error';
 
 const hello = {
   ptBr: 'olar',
@@ -16,17 +17,17 @@ export const resolvers = {
     async createUser(_parent: any, args: { data: { name: string; email: string; password: string } }) {
       const { name, email, password } = args.data;
       if (!validator.password(password)) {
-        throw new Error('wrong password format');
+        throw new CustomError('wrong password format', 400);
       }
 
       if (!validator.email(email)) {
-        throw new Error('wrong email format');
+        throw new CustomError('wrong email format', 400);
       }
 
       const userRepository = getRepository(User);
       const emailAlreadyExists = await userRepository.findOne({ email });
       if (emailAlreadyExists) {
-        return new Error('email already exists');
+        return new CustomError('email already exists', 401);
       }
 
       const hashManager = new HashManager();
