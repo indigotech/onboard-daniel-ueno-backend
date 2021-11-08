@@ -27,7 +27,7 @@ export const resolvers = {
       const userRepository = getRepository(User);
       const emailAlreadyExists = await userRepository.findOne({ email });
       if (emailAlreadyExists) {
-        return new CustomError('email already exists', 401);
+        return new CustomError('email already exists', 409);
       }
 
       const hashManager = new HashManager();
