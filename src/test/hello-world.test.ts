@@ -1,4 +1,4 @@
-const request = require('supertest');
+import * as request from 'supertest';
 
 describe('hello-world test', function () {
   it('hello-world response', async function () {
