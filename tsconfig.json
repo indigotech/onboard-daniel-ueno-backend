@@ -1,21 +1,13 @@
 {
-   "compilerOptions": {
-      "lib": [
-         "es5",
-         "es6"
-      ],
-      "target": "es2017",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "outDir": "./build",
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "sourceMap": true,
-
-},
-      "include": [
-         ".eslintrc.js",
-         "server.js",
-         "src/**/*"
-      ],
-   }
+  "compilerOptions": {
+    "lib": ["es5", "es6"],
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true
+  },
+  "include": [".eslintrc.js", "server.js", "src/**/*"]
+}
