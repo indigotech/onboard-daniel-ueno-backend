@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import { User } from '../entity/User';
-import { HashManager, validator } from '../services';
+import { Authenticator, HashManager, validator } from '../services';
 import { CustomError } from '../model/error';
 
 const hello = {
@@ -60,8 +60,12 @@ export const resolvers = {
       if (!correctPassword) {
         return new CustomError('e-mail or password not correct', 401);
       }
+
+      const authenticator = new Authenticator();
+      const token = authenticator.generate({ id: databaseUser.id });
+
       const response = {
-        login: { user: { id: databaseUser.id, name: databaseUser.name, email: databaseUser.email }, token: 'umtoken' },
+        login: { user: { id: databaseUser.id, name: databaseUser.name, email: databaseUser.email }, token },
       };
 
       return response;
