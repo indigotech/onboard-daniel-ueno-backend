@@ -1,8 +1,8 @@
+import { expect } from 'chai';
 import * as request from 'supertest';
 
 describe('hello-world test', function () {
-  it('hello-world response', async function () {
-    //meu teste aqui
+  it('should get correct data', async function () {
     const query = `
       query
         hello {
