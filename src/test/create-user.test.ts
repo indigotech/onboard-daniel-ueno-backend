@@ -37,7 +37,7 @@ describe('create-user test', function () {
 
   it('should give an error if email is not valid', async function () {
     const variables = { email: 'daniel.email.cm', name: 'daniel', password: '123456a' };
-    const expectedResponse = { message: 'wrong email format', code: 400 };
+    const expectedResponse = { message: 'e-mail or password not correct', code: 400 };
     const response = await createUserMutation(variables, validToken);
 
     expect(response.body.errors[0].message).to.equal(expectedResponse.message);
