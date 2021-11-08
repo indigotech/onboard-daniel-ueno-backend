@@ -63,7 +63,7 @@ export const resolvers = {
       const response = {
         login: { user: { id: databaseUser.id, name: databaseUser.name, email: databaseUser.email }, token: 'umtoken' },
       };
-      console.log(response);
+
       return response;
     },
   },
