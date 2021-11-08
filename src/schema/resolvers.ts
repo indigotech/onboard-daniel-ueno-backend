@@ -40,8 +40,8 @@ export const resolvers = {
       return userRepository.save(user);
     },
 
-    async login(_parent: any, args: { data: { email: string; password: string } }) {
-      const { email, password } = args.data;
+    async login(_parent: any, args: { data: { email: string; password: string; rememberMe: boolean } }) {
+      const { email, password, rememberMe } = args.data;
       if (!validator.password(password)) {
         throw new CustomError('wrong password format', 400);
       }
@@ -62,7 +62,7 @@ export const resolvers = {
       }
 
       const authenticator = new Authenticator();
-      const token = authenticator.generate({ id: databaseUser.id });
+      const token = authenticator.generate({ id: databaseUser.id, rememberMe });
 
       const response = {
         login: { user: { id: databaseUser.id, name: databaseUser.name, email: databaseUser.email }, token },

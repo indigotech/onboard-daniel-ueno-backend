@@ -2,12 +2,15 @@ import * as jwt from 'jsonwebtoken';
 
 export interface AuthenticationData {
   id: number;
+  rememberMe: boolean;
 }
 
 export class Authenticator {
   public generate(input: AuthenticationData): string {
     const token = jwt.sign(input, process.env.JWT_KEY, {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
+      expiresIn: input.rememberMe
+        ? process.env.ACCESS_TOKEN_EXPIRES_IN_REMEMBER_ME
+        : process.env.ACCESS_TOKEN_EXPIRES_IN,
     });
     return token;
   }
