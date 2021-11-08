@@ -10,6 +10,9 @@ export const typeDefs = `
     email: String!
     password: String!
   }
+  input UserQuery {
+    id: ID
+  }
   type User {
     id: ID
     name: String
@@ -31,6 +34,7 @@ export const typeDefs = `
   # clients can execute, along with the return type for each.
   type Query {
     hello: Hello
+    user(data: UserQuery!): User
   }
   type Mutation {
     createUser(data: UserInput!): User

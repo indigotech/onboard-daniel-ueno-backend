@@ -11,11 +11,27 @@ const hello = {
 export const resolvers = {
   Query: {
     hello: () => hello,
+
+    async user(_parent, args: { data: { id: number } }, context: { token: string }) {
+      new Authenticator().isTokenValid(context.token);
+
+      const userRepository = getRepository(User);
+      const user = await userRepository.findOne({ id: args.data.id });
+
+      if (!user) {
+        throw new CustomError('user not found', 404);
+      }
+      return user;
+    },
   },
 
   Mutation: {
-    async createUser(_parent: any, args: { data: { name: string; email: string; password: string } }, context) {
-      new Authenticator().isTokenValid(context.token as string);
+    async createUser(
+      _parent: any,
+      args: { data: { name: string; email: string; password: string } },
+      context: { token: string },
+    ) {
+      new Authenticator().isTokenValid(context.token);
 
       const { name, email, password } = args.data;
       if (!validator.password(password)) {
