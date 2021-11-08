@@ -1,9 +1,4 @@
-import { setup } from '../setup';
 const request = require('supertest');
-
-before(() => {
-  setup();
-});
 
 describe('hello-world test', function () {
   it('hello-world response', async function () {

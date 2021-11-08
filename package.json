@@ -35,9 +35,7 @@
       "build": "tsc",
       "start": "tsc & node build/index.js",
       "dev-start": "ts-node-dev src/index.ts",
-      "test-dev": "env TEST=true ts-node-dev src/index.ts",
-      "task-mocha": "mocha src/test/index.ts",
-      "hello-mocha": "env TEST=true mocha -r ts-node/register src/test/hello-world.test.ts"
+      "test": "env TEST=true mocha -r ts-node/register src/test/index.ts"
    },
    "repository": {
       "type": "git",

@@ -6,4 +6,3 @@ tmp/
 temp/
 dist/
 .env
-test.env
