@@ -14,7 +14,9 @@ export const resolvers = {
   },
 
   Mutation: {
-    async createUser(_parent: any, args: { data: { name: string; email: string; password: string } }) {
+    async createUser(_parent: any, args: { data: { name: string; email: string; password: string } }, context) {
+      new Authenticator().isTokenValid(context.token as string);
+
       const { name, email, password } = args.data;
       if (!validator.password(password)) {
         throw new CustomError('wrong password format', 400);

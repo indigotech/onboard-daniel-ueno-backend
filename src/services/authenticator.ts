@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import { CustomError } from '../model/error';
 
 export interface AuthenticationData {
   id: number;
@@ -15,8 +16,15 @@ export class Authenticator {
     return token;
   }
 
-  public getTokenData(token: string): AuthenticationData {
-    const data = jwt.verify(token, process.env.JWT_KEY);
-    return data as AuthenticationData;
+  public isTokenValid(token: string) {
+    if (!token) {
+      throw new CustomError('Token not found', 401);
+    }
+
+    try {
+      jwt.verify(token, process.env.JWT_KEY);
+    } catch {
+      throw new CustomError('Invalid token', 401);
+    }
   }
 }

@@ -8,10 +8,17 @@ import { User } from './entity/User';
 const isTest: boolean = process.env.TEST === 'true';
 dotenv.config({ path: process.cwd() + (isTest ? '/test.env' : '/.env') });
 
-const server = async (): Promise<void> => {
-  const server = new ApolloServer({ typeDefs, resolvers });
-  const { url } = await server.listen({ port: process.env.PORT });
-  console.log(`🚀  Server ready at ${url}`);
+const server = async () => {
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req }) => ({
+      token: req.headers.authorization,
+    }),
+  });
+  server.listen({ port: process.env.PORT }).then(({ url }: any) => {
+    console.log(`🚀  Server ready at ${url}`);
+  });
 };
 
 const connection = async (): Promise<Connection> => {
