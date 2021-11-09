@@ -47,7 +47,7 @@ export const typeDefs = `
   type Query {
     hello: Hello
     user(data: UserQuery!): User
-    users(data: UsersQuery!): Users
+    users(data: UsersQuery): Users
   }
   type Mutation {
     createUser(data: UserInput!): User
