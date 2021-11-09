@@ -71,7 +71,7 @@ describe('create-user test', function () {
     testUser.password = hashPassword;
     await userRepository.save(testUser);
 
-    const expectedResponse = { message: 'email already exists', code: 401 };
+    const expectedResponse = { message: 'email already exists', code: 409 };
     const response = await createUserMutation(variables);
 
     await userRepository.delete(testUser);
