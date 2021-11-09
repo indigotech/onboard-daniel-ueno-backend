@@ -24,18 +24,31 @@ export const resolvers = {
       return user;
     },
 
-    async users(_parent, args: { data: { limit: number; offset: number } }, context: { token: string }) {
+    async users(_parent, args: { data: { limit: number; page: number } }, context: { token: string }) {
       new Authenticator().isTokenValid(context.token);
-      const skip = args.data.offset ?? 0;
-      const take = args.data.limit ?? 20;
+      const page = args.data.page ?? 1;
+      const take = args.data.limit ?? 10;
+      const skip = take * (page - 1);
 
       const userRepository = getRepository(User);
-      const users = await userRepository.find({ order: { name: 'ASC' }, skip, take });
+      const [users, count] = await userRepository.findAndCount({ order: { name: 'ASC' }, skip, take });
 
       if (!users) {
         throw new CustomError('users not found', 404);
       }
-      return users;
+
+      const totalPage = Math.floor(count / take);
+      const hasPreviousPage = page > 1 ? true : false;
+      const hasNextPage = page < totalPage ? true : false;
+      const result = {
+        users,
+        page,
+        totalPage,
+        hasPreviousPage,
+        hasNextPage,
+      };
+
+      return result;
     },
   },
 

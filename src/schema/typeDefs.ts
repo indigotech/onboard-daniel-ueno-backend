@@ -26,7 +26,14 @@ export const typeDefs = `
   }
   input UsersQuery {
     limit: Int
-    offset: Int
+    page: Int
+  }
+  type Users {
+    users: [User]
+    page: Int
+    totalPage: Int
+    hasPreviousPage: Boolean
+    hasNextPage: Boolean
   }
   type Login {
     user: User
@@ -40,7 +47,7 @@ export const typeDefs = `
   type Query {
     hello: Hello
     user(data: UserQuery!): User
-    users(data: UsersQuery!): [User]
+    users(data: UsersQuery!): Users
   }
   type Mutation {
     createUser(data: UserInput!): User
