@@ -9,5 +9,6 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
+  "exclude": ["node_modules"],
   "include": [".eslintrc.js", "server.js", "src/**/*"]
 }

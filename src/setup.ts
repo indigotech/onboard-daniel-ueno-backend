@@ -16,12 +16,12 @@ const server = async () => {
       token: req.headers.authorization,
     }),
   });
-  server.listen({ port: process.env.PORT }).then(({ url }: any) => {
-    console.log(`🚀  Server ready at ${url}`);
-  });
+
+  const { url } = await server.listen({ port: process.env.PORT });
+  console.log(`🚀  Server ready at ${url}`);
 };
 
-const connection = async (): Promise<Connection> => {
+export const connection = async (): Promise<Connection> => {
   return createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
@@ -32,6 +32,10 @@ const connection = async (): Promise<Connection> => {
 };
 
 export const setup = async (): Promise<void> => {
-  await connection();
-  await server();
+  try {
+    await connection();
+    await server();
+  } catch {
+    console.error('error at setup start');
+  }
 };
