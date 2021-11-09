@@ -23,6 +23,20 @@ export const resolvers = {
       }
       return user;
     },
+
+    async users(_parent, args: { data: { limit: number; offset: number } }, context: { token: string }) {
+      new Authenticator().isTokenValid(context.token);
+      const skip = args.data.offset ?? 0;
+      const take = args.data.limit ?? 20;
+
+      const userRepository = getRepository(User);
+      const users = await userRepository.find({ order: { name: 'ASC' }, skip, take });
+
+      if (!users) {
+        throw new CustomError('users not found', 404);
+      }
+      return users;
+    },
   },
 
   Mutation: {
