@@ -22,18 +22,20 @@ async function createUserMutation(variables: any) {
 describe('create-user test', function () {
   it('should give an error if password is not valid', async function () {
     const variables = { email: 'daniel@email.com', name: 'daniel', password: '123456' };
-    const expectedResponse = 'wrong password format';
+    const expectedResponse = { message: 'wrong password format', code: 400 };
     const response = await createUserMutation(variables);
 
-    expect(response.body.errors[0].message).to.equal(expectedResponse);
+    expect(response.body.errors[0].message).to.equal(expectedResponse.message);
+    expect(response.body.errors[0].extensions.exception.code).to.equal(expectedResponse.code);
   });
 
   it('should give an error if email is not valid', async function () {
     const variables = { email: 'daniel.email.cm', name: 'daniel', password: '123456a' };
-    const expectedResponse = 'wrong email format';
+    const expectedResponse = { message: 'wrong email format', code: 400 };
     const response = await createUserMutation(variables);
 
-    expect(response.body.errors[0].message).to.equal(expectedResponse);
+    expect(response.body.errors[0].message).to.equal(expectedResponse.message);
+    expect(response.body.errors[0].extensions.exception.code).to.equal(expectedResponse.code);
   });
 
   it('should create user,saving it at database and return user name and email at response', async function () {
@@ -69,11 +71,12 @@ describe('create-user test', function () {
     testUser.password = hashPassword;
     await userRepository.save(testUser);
 
-    const expectedResponse = 'email already exists';
+    const expectedResponse = { message: 'email already exists', code: 409 };
     const response = await createUserMutation(variables);
 
     await userRepository.delete(testUser);
 
-    expect(response.body.errors[0].message).to.equal(expectedResponse);
+    expect(response.body.errors[0].message).to.equal(expectedResponse.message);
+    expect(response.body.errors[0].extensions.exception.code).to.equal(expectedResponse.code);
   });
 });
