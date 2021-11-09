@@ -5,6 +5,6 @@ before(async () => {
 });
 
 // require('./hello-world.test');
-require('./create-user.test');
-// require('./user-query.test');
+// require('./create-user.test');
+require('./user-query.test');
 // require('./login.test');
