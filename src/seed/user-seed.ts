@@ -1,9 +1,9 @@
 import { HashManager } from '../services';
-import { User } from '../entity/user';
 import { getRepository } from 'typeorm';
+import { User } from '../entity/User';
 
 export async function seedDatabase() {
-  const userRepository = getRepository('User');
+  const userRepository = getRepository(User);
   const hashManager = new HashManager();
   const users = [];
 
@@ -16,8 +16,8 @@ export async function seedDatabase() {
   }
   try {
     await userRepository.save(users);
-    console.log('seed database completed');
+    console.info('seed database completed');
   } catch {
-    console.log('error at saving the seeds');
+    console.error('error at saving the seeds');
   }
 }

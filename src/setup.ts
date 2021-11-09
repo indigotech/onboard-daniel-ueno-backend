@@ -36,6 +36,6 @@ export const setup = async (): Promise<void> => {
     await connection();
     await server();
   } catch {
-    console.log('error at setup start');
+    console.error('error at setup start');
   }
 };
