@@ -58,7 +58,7 @@ export const resolvers = {
       return userRepository.save(user);
     },
 
-    async login(_parent: any, args: { data: { email: string; password: string; rememberMe: boolean } }) {
+    async login(_parent: any, args: { data: { email: string; password: string; rememberMe?: boolean } }) {
       const { email, password, rememberMe } = args.data;
       if (!validator.password(password)) {
         throw new CustomError('wrong password format', 400);

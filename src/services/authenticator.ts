@@ -23,6 +23,7 @@ export class Authenticator {
 
     try {
       jwt.verify(token, process.env.JWT_KEY);
+      return true;
     } catch {
       throw new CustomError('Invalid token', 401);
     }

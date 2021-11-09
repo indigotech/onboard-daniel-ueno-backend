@@ -21,7 +21,7 @@ export const typeDefs = `
   input LoginInput {
     email: String!
     password: String!
-    rememberMe: Boolean!
+    rememberMe: Boolean
   }
   type Login {
     user: User
