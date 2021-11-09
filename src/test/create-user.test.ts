@@ -2,9 +2,9 @@ import * as request from 'supertest';
 import { expect } from 'chai';
 import { getRepository } from 'typeorm';
 import { User } from '../entity/User';
+import { HashManager } from '../services';
 
-async function createUserMutation(variables: any) {
-  const query = `
+const query = `
     mutation createUser($data: UserInput!) {
       createUser(data: $data) {
         id
@@ -12,6 +12,8 @@ async function createUserMutation(variables: any) {
         email
       }
     }`;
+
+async function createUserMutation(variables: any) {
   return request('localhost:4001')
     .post('/')
     .send({ query, variables: { data: variables } });
@@ -41,29 +43,37 @@ describe('create-user test', function () {
 
     const userRepository = getRepository(User);
     const savedUser = await userRepository.findOne({ email: response.body.data.createUser.email });
+    const hashManager = new HashManager();
+    const isPasswordCorrect = await hashManager.compare(variables.password, savedUser.password);
 
-    expect(savedUser.id).to.be.a('number');
+    await userRepository.delete(savedUser);
+
+    expect(Number(response.body.data.createUser.id)).to.be.equal(savedUser.id);
     expect(savedUser.name).to.equal(expectedResponse.name);
     expect(savedUser.email).to.equal(expectedResponse.email);
-    expect(savedUser.password).to.be.a('string');
+    expect(isPasswordCorrect).to.equal(true);
     expect(savedUser.password).to.not.equal(variables.password);
-
     expect(response.body.data.createUser.name).to.equal(expectedResponse.name);
     expect(response.body.data.createUser.email).to.equal(expectedResponse.email);
-    await userRepository.delete(savedUser);
   });
 
   it('should give an error if user is already created', async function () {
+    const userRepository = getRepository(User);
+    const hashManager = new HashManager();
     const variables = { email: 'daniel@email.com', name: 'daniel', password: '123456a' };
-    await createUserMutation(variables);
-    const expectedResponse = 'email already exists';
+    const hashPassword = await hashManager.hash(variables.password);
 
+    const testUser = new User();
+    testUser.name = variables.name;
+    testUser.email = variables.email;
+    testUser.password = hashPassword;
+    await userRepository.save(testUser);
+
+    const expectedResponse = 'email already exists';
     const response = await createUserMutation(variables);
 
-    expect(response.body.errors[0].message).to.equal(expectedResponse);
+    await userRepository.delete(testUser);
 
-    const userRepository = getRepository(User);
-    const user = await userRepository.findOne({ email: variables.email });
-    await userRepository.delete(user);
+    expect(response.body.errors[0].message).to.equal(expectedResponse);
   });
 });
