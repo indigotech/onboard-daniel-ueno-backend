@@ -94,10 +94,7 @@ describe('users-query test', function () {
       hasPreviousPage: false,
       hasNextPage: true,
     };
-    expect(response.body.data.users.users).deep.equal(expectedResponse.users);
-    expect(response.body.data.users.page).to.equal(expectedResponse.page);
-    expect(response.body.data.users.hasPreviousPage).to.equal(expectedResponse.hasPreviousPage);
-    expect(response.body.data.users.hasNextPage).to.equal(expectedResponse.hasNextPage);
+    expect(response.body.data.users).deep.equal(expectedResponse);
   });
 
   it('should get the correct data, page in the middle', async function () {
@@ -116,10 +113,7 @@ describe('users-query test', function () {
       hasPreviousPage: true,
       hasNextPage: true,
     };
-    expect(response.body.data.users.users).deep.equal(expectedResponse.users);
-    expect(response.body.data.users.page).to.equal(expectedResponse.page);
-    expect(response.body.data.users.hasPreviousPage).to.equal(expectedResponse.hasPreviousPage);
-    expect(response.body.data.users.hasNextPage).to.equal(expectedResponse.hasNextPage);
+    expect(response.body.data.users).deep.equal(expectedResponse);
   });
 
   it('should get the correct data, last page', async function () {
@@ -138,10 +132,7 @@ describe('users-query test', function () {
       hasPreviousPage: true,
       hasNextPage: false,
     };
-    expect(response.body.data.users.users).deep.equal(expectedResponse.users);
-    expect(response.body.data.users.page).to.equal(expectedResponse.page);
-    expect(response.body.data.users.hasPreviousPage).to.equal(expectedResponse.hasPreviousPage);
-    expect(response.body.data.users.hasNextPage).to.equal(expectedResponse.hasNextPage);
+    expect(response.body.data.users).deep.equal(expectedResponse);
   });
 
   it('should give an empty array if page is higher than the last page', async function () {
@@ -160,9 +151,6 @@ describe('users-query test', function () {
       hasPreviousPage: true,
       hasNextPage: false,
     };
-    expect(response.body.data.users.users).deep.equal(expectedResponse.users);
-    expect(response.body.data.users.page).to.equal(expectedResponse.page);
-    expect(response.body.data.users.hasPreviousPage).to.equal(expectedResponse.hasPreviousPage);
-    expect(response.body.data.users.hasNextPage).to.equal(expectedResponse.hasNextPage);
+    expect(response.body.data.users).deep.equal(expectedResponse);
   });
 });
