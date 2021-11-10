@@ -15,6 +15,8 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Address, (address) => address.user)
+  @OneToMany(() => Address, (address) => address.user, {
+    eager: true,
+  })
   addresses: Address[];
 }

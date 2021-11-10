@@ -37,7 +37,11 @@ export const resolvers = {
       }
 
       const userRepository = getRepository(User);
-      const [users, count] = await userRepository.findAndCount({ order: { name: 'ASC' }, skip, take });
+      const [users, count] = await userRepository.findAndCount({
+        order: { name: 'ASC' },
+        skip,
+        take,
+      });
 
       const totalPage = Math.floor(count / take);
       const hasPreviousPage = page > 1;
