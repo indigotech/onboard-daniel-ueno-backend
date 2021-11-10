@@ -16,7 +16,6 @@ const server = async () => {
       token: req.headers.authorization,
     }),
   });
-
   const { url } = await server.listen({ port: process.env.PORT });
   console.log(`🚀  Server ready at ${url}`);
 };

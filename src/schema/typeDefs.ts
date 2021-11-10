@@ -11,8 +11,9 @@ export const typeDefs = `
     password: String!
   }
   input UserQuery {
-    id: ID
+    id: ID!
   }
+
   type User {
     id: ID
     name: String
@@ -22,6 +23,17 @@ export const typeDefs = `
     email: String!
     password: String!
     rememberMe: Boolean
+  }
+  input UsersQuery {
+    limit: Int
+    page: Int
+  }
+  type Users {
+    users: [User]
+    page: Int
+    totalPage: Int
+    hasPreviousPage: Boolean
+    hasNextPage: Boolean
   }
   type Login {
     user: User
@@ -35,6 +47,7 @@ export const typeDefs = `
   type Query {
     hello: Hello
     user(data: UserQuery!): User
+    users(data: UsersQuery): Users
   }
   type Mutation {
     createUser(data: UserInput!): User

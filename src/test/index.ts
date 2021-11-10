@@ -4,7 +4,8 @@ before(async () => {
   await setup();
 });
 
-// require('./hello-world.test');
-// require('./create-user.test');
+require('./hello-world.test');
+require('./create-user.test');
 require('./user-query.test');
-// require('./login.test');
+require('./login.test');
+require('./users-query.test');

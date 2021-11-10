@@ -23,6 +23,36 @@ export const resolvers = {
       }
       return user;
     },
+
+    async users(_parent, args: { data: { limit: number; page: number } }, context: { token: string }) {
+      new Authenticator().isTokenValid(context.token);
+      const page = args.data.page ?? 1;
+      const take = args.data.limit ?? 10;
+      const skip = take * (page - 1);
+      if (page < 0) {
+        throw new CustomError(`page must not be negative`, 400);
+      }
+      if (take <= 0) {
+        throw new CustomError(`limit must be higher than zero`, 400);
+      }
+
+      const userRepository = getRepository(User);
+      const [users, count] = await userRepository.findAndCount({ order: { name: 'ASC' }, skip, take });
+
+      const totalPage = Math.floor(count / take);
+      const hasPreviousPage = page > 1;
+      const hasNextPage = page < totalPage;
+
+      const result = {
+        users,
+        page,
+        totalPage,
+        hasPreviousPage,
+        hasNextPage,
+      };
+
+      return result;
+    },
   },
 
   Mutation: {
