@@ -3,7 +3,8 @@ import { Connection, createConnection } from 'typeorm';
 import { ApolloServer } from 'apollo-server';
 import * as dotenv from 'dotenv';
 import { resolvers, typeDefs } from './schema';
-import { User } from './entity/User';
+import { User } from './entity/user';
+import { Address } from './entity/address';
 
 const isTest: boolean = process.env.TEST === 'true';
 dotenv.config({ path: process.cwd() + (isTest ? '/test.env' : '/.env') });
@@ -26,7 +27,7 @@ export const connection = async (): Promise<Connection> => {
     url: process.env.DATABASE_URL,
     synchronize: true,
     logging: false,
-    entities: [User],
+    entities: [User, Address],
   });
 };
 
