@@ -16,7 +16,7 @@ export const resolvers = {
       new Authenticator().isTokenValid(context.token);
 
       const userRepository = getRepository(User);
-      const user = await userRepository.findOne({ id: args.data.id });
+      const user = await userRepository.findOne({ id: args.data.id }, { relations: ['addresses'] });
 
       if (!user) {
         throw new CustomError('user not found', 404);
@@ -37,7 +37,12 @@ export const resolvers = {
       }
 
       const userRepository = getRepository(User);
-      const [users, count] = await userRepository.findAndCount({ order: { name: 'ASC' }, skip, take });
+      const [users, count] = await userRepository.findAndCount({
+        order: { name: 'ASC' },
+        skip,
+        take,
+        relations: ['addresses'],
+      });
 
       const totalPage = Math.floor(count / take);
       const hasPreviousPage = page > 1;

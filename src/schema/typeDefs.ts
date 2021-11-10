@@ -18,6 +18,7 @@ export const typeDefs = `
     id: ID
     name: String
     email: String
+    addresses: [Address]
   }
   input LoginInput {
     email: String!
@@ -41,6 +42,16 @@ export const typeDefs = `
   }
   type LoginAuth {
     login: Login
+  }
+  type Address {
+    id: ID
+    cep: String
+    street: String
+    streetNumber: Int
+    neighborhood: String
+    city: String
+    state: String
+    complement: String
   }
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each.
