@@ -108,7 +108,7 @@ describe('users-query test', function () {
     const totalPage = Math.floor(totalCount / variables.limit);
 
     const response = await graphqlPost(variables, validToken);
-    console.log(seedUsers);
+
     const expectedResponse = {
       users: seedUsers.slice(skip, skip + take),
       page,
