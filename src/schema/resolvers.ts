@@ -16,7 +16,7 @@ export const resolvers = {
       new Authenticator().isTokenValid(context.token);
 
       const userRepository = getRepository(User);
-      const user = await userRepository.findOne({ id: args.data.id }, { relations: ['addresses'] });
+      const user = await userRepository.findOne({ id: args.data.id });
 
       if (!user) {
         throw new CustomError('user not found', 404);
@@ -41,7 +41,6 @@ export const resolvers = {
         order: { name: 'ASC' },
         skip,
         take,
-        relations: ['addresses'],
       });
 
       const totalPage = Math.floor(count / take);

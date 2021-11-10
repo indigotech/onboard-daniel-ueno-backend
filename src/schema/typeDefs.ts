@@ -44,13 +44,13 @@ export const typeDefs = `
     login: Login
   }
   type Address {
-    id: ID
-    cep: String
-    street: String
-    streetNumber: Int
-    neighborhood: String
-    city: String
-    state: String
+    id: ID!
+    cep: String!
+    street: String!
+    streetNumber: Int!
+    neighborhood: String!
+    city: String!
+    state: String!
     complement: String
   }
   # The "Query" type is special: it lists all of the available queries that
