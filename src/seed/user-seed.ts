@@ -1,6 +1,6 @@
 import { HashManager } from '../services';
 import { getRepository } from 'typeorm';
-import { User } from '../entity/User';
+import { User } from '../entity/user';
 
 export async function seedDatabase() {
   const userRepository = getRepository(User);

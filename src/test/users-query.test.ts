@@ -1,7 +1,7 @@
 import * as request from 'supertest';
 import { expect } from 'chai';
 import { getRepository, Repository } from 'typeorm';
-import { User } from '../entity/User';
+import { User } from '../entity/user';
 import * as jwt from 'jsonwebtoken';
 import { generateSeed } from '../seed';
 

@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import { User } from '../entity/User';
+import { User } from '../entity/user';
 import { Authenticator, HashManager, validator } from '../services';
 import { CustomError } from '../model/error';
 
