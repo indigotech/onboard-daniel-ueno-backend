@@ -32,23 +32,16 @@ export const resolvers = {
       if (page < 0) {
         throw new CustomError(`page must not be negative`, 400);
       }
-      if (take < 0) {
-        throw new CustomError(`limit must not be negative`, 400);
+      if (take <= 0) {
+        throw new CustomError(`limit must be higher than zero`, 400);
       }
 
       const userRepository = getRepository(User);
       const [users, count] = await userRepository.findAndCount({ order: { name: 'ASC' }, skip, take });
 
       const totalPage = Math.floor(count / take);
-      const hasPreviousPage = page > 1 ? true : false;
-      const hasNextPage = page < totalPage ? true : false;
-
-      if (!users) {
-        throw new CustomError('users not found', 404);
-      }
-      if (page > totalPage) {
-        throw new CustomError(`page must be between 1 and ${totalPage}`, 400);
-      }
+      const hasPreviousPage = page > 1;
+      const hasNextPage = page < totalPage;
 
       const result = {
         users,
